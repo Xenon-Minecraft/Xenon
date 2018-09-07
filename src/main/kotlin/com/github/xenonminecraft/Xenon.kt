@@ -7,6 +7,8 @@ import mu.KotlinLogging
 
 class Xenon {
     companion object {
+        val PROTOCOL = 401
+
         val LOGGER = KotlinLogging.logger{}
         val GSON = GsonBuilder().create()
 
