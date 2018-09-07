@@ -74,7 +74,9 @@ fun ByteBuf.writeVarLong(num: Long) {
 
 fun ByteBuf.readString(): String {
     val size = readVarInt()
-    val string = String(readBytes(size).array())
+    val array = ByteArray(size)
+    readBytes(array)
+    val string = String(array)
     return string
 }
 
