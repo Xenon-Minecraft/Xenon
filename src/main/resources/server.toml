@@ -1,0 +1,7 @@
+[network]
+ip="0.0.0.0"
+port=25565
+
+[server]
+online-mode=true
+server-motd="A Minecraft Server"
