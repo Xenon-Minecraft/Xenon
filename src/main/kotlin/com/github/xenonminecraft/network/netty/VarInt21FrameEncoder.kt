@@ -1,4 +1,4 @@
-package com.github.xenonminecraft.network.handler
+package com.github.xenonminecraft.network.netty
 
 import com.github.xenonminecraft.network.util.sizeOfVarInt
 import com.github.xenonminecraft.network.util.writeVarInt
