@@ -1,8 +1,8 @@
 package com.github.xenonminecraft.network
 
-import com.github.xenonminecraft.network.handler.MinecraftPacketDecoder
-import com.github.xenonminecraft.network.handler.VarInt21FrameDecoder
-import com.github.xenonminecraft.network.handler.VarInt21FrameEncoder
+import com.github.xenonminecraft.network.netty.MinecraftPacketDecoder
+import com.github.xenonminecraft.network.netty.VarInt21FrameDecoder
+import com.github.xenonminecraft.network.netty.VarInt21FrameEncoder
 import io.netty.channel.ChannelInitializer
 import io.netty.channel.socket.SocketChannel
 
