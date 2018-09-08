@@ -1,26 +1,24 @@
 package com.github.xenonminecraft.network.util
 
 import io.netty.buffer.ByteBuf
+import io.netty.buffer.Unpooled
 import kotlin.experimental.and
 
 
 fun ByteBuf.readVarInt(): Int {
-    var numRead = 0
-    var result = 0
-    var read: Byte
-    do {
-        read = readByte()
-        val value = read and 127
-        val a = (value.toInt() shl (7 * numRead))
-        result = result or a
+    var i = 0
+    var j = 0
+    while (true) {
+        val k = readByte()
+        i = i or ((k and 127).toInt() shl j++ * 7)
+        if (j > 5) return -1
+        if (k and 128.toByte() != 128.toByte()) break
+    }
+    return i
+}
 
-        numRead++
-        if (numRead > 5) {
-            throw RuntimeException("VarInt is too big")
-        }
-    } while (read and (128).toByte() != (0).toByte())
-
-    return result
+fun ByteBuf.readSpecialByteArray(): ByteArray {
+    return Unpooled.copiedBuffer(readBytes(readVarInt())).array()
 }
 
 fun ByteBuf.readVarLong(): Long {
@@ -42,16 +40,13 @@ fun ByteBuf.readVarLong(): Long {
 }
 
 fun ByteBuf.writeVarInt(num: Int) {
-    var value = num
-    do {
-        var temp = (value and 127)
-        // Note: >>> means that the sign bit is shifted with the rest of the number rather than being left alone
-        value = value ushr 7
-        if (value != 0) {
-            temp = temp or 128
-        }
-        writeByte(temp)
-    } while (value != 0)
+    var i = num
+    while ((i and -128) != 0) {
+        writeByte(i and 127 or 128)
+        i = i ushr 7
+    }
+
+    writeByte(i)
 }
 
 fun Int.sizeOfVarInt(): Int {
