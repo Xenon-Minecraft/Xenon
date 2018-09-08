@@ -3,6 +3,7 @@ package com.github.xenonminecraft.network.packet.server.login
 import com.github.xenonminecraft.network.packet.Packet
 import com.github.xenonminecraft.network.packet.PacketInfo
 import com.github.xenonminecraft.network.util.writeVarInt
+import io.netty.buffer.ByteBuf
 import io.netty.buffer.Unpooled
 
 /**
@@ -12,9 +13,9 @@ import io.netty.buffer.Unpooled
  */
 @PacketInfo(0x03)
 class PacketServerSetCompression(var threshold: Int) : Packet() {
-    override fun encode(): ByteArray {
+    override fun encode(): ByteBuf {
         val buf = Unpooled.buffer()
         buf.writeVarInt(threshold)
-        return buf.array()
+        return buf
     }
 }
