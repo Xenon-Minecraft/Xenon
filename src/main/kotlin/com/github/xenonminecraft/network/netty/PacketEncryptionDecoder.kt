@@ -5,7 +5,7 @@ import io.netty.channel.ChannelHandlerContext
 import io.netty.handler.codec.ByteToMessageDecoder
 import javax.crypto.Cipher
 
-class PacketEncryptingDecoder(val cipher: Cipher) : ByteToMessageDecoder() {
+class PacketEncryptionDecoder(val cipher: Cipher) : ByteToMessageDecoder() {
 
     private val codec = PacketEncryptionTranslator(cipher)
 
