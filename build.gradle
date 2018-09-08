@@ -17,7 +17,6 @@ dependencies {
     compile "com.google.code.gson:gson:2.8.5"
     compile "com.moandjiezana.toml:toml4j:0.7.2"
     compile "com.google.guava:guava:26.0-jre"
-    compile "org.apache.commons:commons-compress:1.18"
     compile "org.slf4j:slf4j-api:1.7.5"
     compile "ch.qos.logback:logback-classic:1.2.3"
     compile "com.squareup.okhttp3:okhttp:3.11.0"
