@@ -1,0 +1,14 @@
+group 'com.theultimatepleb'
+version '1.0-SNAPSHOT'
+
+dependencies {
+    compile 'io.netty:netty-all:4.1.14.Final'
+    compile 'com.moandjiezana.toml:toml4j:0.7.2'
+    compile ('io.github.microutils:kotlin-logging:1.4.6') {
+        exclude group: 'org.slf4j', module: 'slf4j-api'
+    }
+    compile 'org.slf4j:slf4j-api:1.7.5'
+    compile 'ch.qos.logback:logback-classic:1.2.3'
+    compile 'com.google.code.gson:gson:2.8.1'
+    compile 'org.apache.commons:commons-lang3:3.6'
+}
