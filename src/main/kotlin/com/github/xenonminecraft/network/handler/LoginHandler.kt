@@ -45,9 +45,11 @@ class LoginHandler(val pc: PlayerConnection) {
                     if(compthresh > -1) {
                         pc.sendPacket(PacketServerSetCompression(compthresh))
                         pc.compressionThreshold = compthresh
+                        pc.enableCompression()
                     }
 
                     pc.sendPacket(PacketServerLoginSuccess(UUID.fromString(gp.uuid), gp.name))
+                    pc.state = PlayerConnection.State.PLAY
 
                     Xenon.LOGGER.info("Player ${gp.name} (${gp.uuid}) has joined the game!")
                 }
