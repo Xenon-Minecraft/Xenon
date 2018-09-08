@@ -16,11 +16,10 @@ class XenonServerInitialiser : ChannelInitializer<SocketChannel>() {
         //Decompressor will be here when compression is enabled
         pipeline.addLast("decoder", MinecraftPacketDecoder(cm))
 
+        //Encryption will be here
         pipeline.addLast("prepender", VarInt21FrameEncoder())
         //Compressor will be here
         pipeline.addLast("encoder", MinecraftPacketEncoder())
-        //Encryption will be here
 
-        //PACKET HANDLER
     }
 }

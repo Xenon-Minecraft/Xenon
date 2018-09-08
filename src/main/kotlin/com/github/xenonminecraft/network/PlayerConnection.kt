@@ -9,7 +9,7 @@ import io.netty.channel.socket.SocketChannel
 import java.net.InetSocketAddress
 import javax.crypto.SecretKey
 
-class PlayerConnection(val addr: InetSocketAddress, val ch: SocketChannel, val channelContext: ChannelHandlerContext) {
+class PlayerConnection(val addr: InetSocketAddress, val ch: SocketChannel) {
     var state: State = State.NONE
     var protocolVersion: Int = 0
 
@@ -26,12 +26,18 @@ class PlayerConnection(val addr: InetSocketAddress, val ch: SocketChannel, val c
         ch.writeAndFlush(p)
     }
 
+    fun dumpPipeline() {
+        ch.pipeline().forEach {
+            println(it.key)
+        }
+    }
+
     fun enableEncryption() {
         if (encrypted)
             return
-        channelContext.channel().pipeline().addBefore("splitter", "decrypt",
+        ch.pipeline().addBefore("splitter", "decrypt",
                 PacketEncryptionDecoder(Xenon.instance!!.encryptionManager.createNetCipher(2, sharedSecret!!)))
-        channelContext.channel().pipeline().addBefore("prepender", "encrypt",
+        ch.pipeline().addBefore("prepender", "encrypt",
                 PacketEncryptionEncoder(Xenon.instance!!.encryptionManager.createNetCipher(1, sharedSecret!!)))
         encrypted = true
     }
@@ -39,8 +45,8 @@ class PlayerConnection(val addr: InetSocketAddress, val ch: SocketChannel, val c
     fun enableCompression() {
         if(compress)
             return
-        channelContext.channel().pipeline().addAfter("splitter", "decompress", MinecraftPacketDecompressor(this))
-        channelContext.channel().pipeline().addAfter("prepender", "compress", MinecraftPacketCompressor(this))
+        ch.pipeline().addAfter("splitter", "decompress", MinecraftPacketDecompressor(this))
+        ch.pipeline().addAfter("prepender", "compress", MinecraftPacketCompressor(this))
         compress = true
     }
 

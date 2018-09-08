@@ -13,6 +13,5 @@ import io.netty.buffer.ByteBuf
 class PacketClientPing(var payload: Long? = null) : Packet() {
     override fun decode(byteBuf: ByteBuf) {
         payload = byteBuf.readLong()
-        println(payload!!)
     }
 }

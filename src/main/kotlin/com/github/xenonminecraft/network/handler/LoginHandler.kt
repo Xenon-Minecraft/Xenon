@@ -40,6 +40,7 @@ class LoginHandler(val pc: PlayerConnection) {
                         return
                     }
                     pc.gameProfile = gp
+                    pc.enableEncryption()
 
                     val compthresh = Xenon.instance!!.config.getLong("network.compression-threshold").toInt()
                     if(compthresh > -1) {
@@ -50,6 +51,7 @@ class LoginHandler(val pc: PlayerConnection) {
 
                     pc.sendPacket(PacketServerLoginSuccess(UUID.fromString(gp.uuid), gp.name))
                     pc.state = PlayerConnection.State.PLAY
+                    pc.dumpPipeline()
 
                     Xenon.LOGGER.info("Player ${gp.name} (${gp.uuid}) has joined the game!")
                 }
