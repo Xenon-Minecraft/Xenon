@@ -2,7 +2,9 @@ package com.github.xenonminecraft.network.packet.server.login
 
 import com.github.xenonminecraft.network.packet.Packet
 import com.github.xenonminecraft.network.packet.PacketInfo
+import com.github.xenonminecraft.network.util.writeString
 import com.github.xenonminecraft.network.util.writeVarInt
+import io.netty.buffer.ByteBuf
 import io.netty.buffer.Unpooled
 
 /**
@@ -16,13 +18,14 @@ import io.netty.buffer.Unpooled
  */
 @PacketInfo(0x01)
 class PacketServerEncryptionRequest(var publicKey: ByteArray, var verifyToken: ByteArray) : Packet() {
-    override fun encode(): ByteArray {
+    override fun encode(): ByteBuf {
         val buf = Unpooled.buffer()
+        buf.writeString("")
         buf.writeVarInt(publicKey.size)
         buf.writeBytes(publicKey)
         buf.writeVarInt(verifyToken.size)
         buf.writeBytes(verifyToken)
 
-        return buf.array()
+        return buf
     }
 }

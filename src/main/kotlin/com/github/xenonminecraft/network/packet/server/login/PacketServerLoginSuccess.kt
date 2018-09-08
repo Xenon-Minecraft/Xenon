@@ -3,6 +3,7 @@ package com.github.xenonminecraft.network.packet.server.login
 import com.github.xenonminecraft.network.packet.Packet
 import com.github.xenonminecraft.network.packet.PacketInfo
 import com.github.xenonminecraft.network.util.writeString
+import io.netty.buffer.ByteBuf
 import io.netty.buffer.Unpooled
 import java.util.*
 
@@ -14,10 +15,10 @@ import java.util.*
  */
 @PacketInfo(0x02)
 class PacketServerLoginSuccess(var uuid: UUID, var username: String) : Packet() {
-    override fun encode(): ByteArray {
+    override fun encode(): ByteBuf {
         val buf = Unpooled.buffer()
         buf.writeString(uuid.toString())
         buf.writeString(username)
-        return buf.array()
+        return buf
     }
 }

@@ -11,7 +11,7 @@ import io.netty.buffer.ByteBuf
  */
 @PacketInfo(0x00)
 class PacketServerDisconnect : Packet() {
-    override fun encode(): ByteArray {
+    override fun encode(): ByteBuf {
         TODO("encode later")
     }
 }
