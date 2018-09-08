@@ -1,5 +1,6 @@
 plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.2.61'
+    id 'com.github.johnrengelman.shadow' version '2.0.4'
 }
 
 group 'com.github.sebastianagius'
@@ -7,12 +8,24 @@ version '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
+    jcenter()
 }
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     compile "io.netty:netty-all:4.1.29.Final"
     compile "com.google.code.gson:gson:2.8.5"
+    compile "com.moandjiezana.toml:toml4j:0.7.2"
+    compile "com.google.guava:guava:26.0-jre"
+    compile "org.apache.commons:commons-compress:1.18"
+    compile "org.slf4j:slf4j-api:1.7.5"
+    compile "ch.qos.logback:logback-classic:1.2.3"
+    compile "com.squareup.okhttp3:okhttp:3.11.0"
+    compile "com.github.kittinunf.fuel:fuel:1.10.0"
+    compile "com.github.kittinunf.fuel:fuel-gson:1.10.0"
+    compile ("io.github.microutils:kotlin-logging:1.4.6") {
+        exclude group: 'org.slf4j', module: 'slf4j-api'
+    }
 }
 
 compileKotlin {
@@ -20,4 +33,24 @@ compileKotlin {
 }
 compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
+}
+
+shadowJar {
+    archiveName = jar.archiveName
+
+    doLast {
+        copy {
+            from 'build/libs/' + archiveName
+            into "test/"
+        }
+    }
+}
+
+jar {
+    manifest {
+        attributes(
+                'Class-Path': configurations.compile.collect { it.getName() }.join(' '),
+                'Main-Class': 'com.github.xenonminecraft.BootstrapKt'
+        )
+    }
 }
