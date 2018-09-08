@@ -6,7 +6,7 @@ abstract class Packet {
     open fun decode(byteBuf: ByteBuf) {
         throw UnsupportedOperationException("Unable to decode this packet")
     }
-    open fun encode(): ByteArray {
+    open fun encode(): ByteBuf {
         throw UnsupportedOperationException("Unable to encode this packet")
     }
 }
