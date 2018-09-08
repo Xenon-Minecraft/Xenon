@@ -29,7 +29,7 @@ fun main(args: Array<String>) {
     val port = config.getLong("network.port").toInt()
     val ip = config.getString("network.ip")
     println("Starting Minecraft Server $MINECRAFT_VERSION with Xenon $XENON_VERSION on $ip:$port")
-    Xenon().start()
+    Xenon(config).start()
 
     Thread {
 
