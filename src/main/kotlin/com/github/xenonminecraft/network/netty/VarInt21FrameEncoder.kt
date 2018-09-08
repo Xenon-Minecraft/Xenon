@@ -24,6 +24,7 @@ class VarInt21FrameEncoder : MessageToByteEncoder<ByteBuf>() {
         }
 
         out.ensureWritable(readable + readableSize)
+
         out.writeVarInt(readable)
         out.writeBytes(msg, msg.readerIndex(), readable)
     }
