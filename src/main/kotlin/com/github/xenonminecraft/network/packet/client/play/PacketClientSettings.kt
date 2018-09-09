@@ -10,7 +10,7 @@ import com.github.xenonminecraft.xenon.SkinDetails
 import io.netty.buffer.ByteBuf
 
 /**
- * Specificiation: https://wiki.vg/Protocol#Client_Settings
+ * Specification: https://wiki.vg/Protocol#Client_Settings
  *
  * Locale - String
  * View Distance - Byte

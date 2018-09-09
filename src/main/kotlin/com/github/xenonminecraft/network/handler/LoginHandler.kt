@@ -58,7 +58,6 @@ class LoginHandler(val pc: PlayerConnection) {
                     }
 
                     pc.sendPacket(PacketServerLoginSuccess(UUID.fromString(gp.uuid), gp.name))
-                    pc.loginCompleted = true
 
                     pc.state = PlayerConnection.State.PLAY
                     pc.sendPacket(PacketServerJoinGame(0, GameMode.SURVIVAL, Dimension.OVERWORLD,
@@ -66,7 +65,10 @@ class LoginHandler(val pc: PlayerConnection) {
                     sendBrand()
 
                     pc.sendPacket(PacketServerDifficulty(Xenon.instance!!.difficulty))
+
                     pc.sendPacket(PacketServerSpawnPosition(Position()))
+
+
                     pc.sendPacket(PacketServerPlayerAbilities(false, false, false, false, 1F, 1F))
 
                     Xenon.LOGGER.info("Player ${gp.name} (${gp.uuid}) has joined the game!")
@@ -79,7 +81,6 @@ class LoginHandler(val pc: PlayerConnection) {
     private fun sendBrand() {
         val buf = Unpooled.buffer()
         buf.writeString("Xenon ${Bootstrap.XENON_VERSION}")
-
         pc.sendPacket(PacketServerPluginMessage("brand", buf.array()))
     }
 }

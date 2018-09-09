@@ -7,6 +7,11 @@ import kotlin.experimental.and
 
 
 fun ByteBuf.readVarInt(): Int {
+    try {
+
+    } catch(e: Exception) {
+
+    }
     var i = 0
     var j = 0
     while (true) {
@@ -86,3 +91,11 @@ fun ByteBuf.writePosition(pos: Position) {
 }
 
 fun ByteBuf.readPosition(): Position = Position.fromLong(readLong())
+
+fun ByteBuf.writeDoubles(vararg d: Double) {
+    d.forEach { writeDouble(it) }
+}
+
+fun ByteBuf.writeFloats(vararg f: Float) {
+    f.forEach { writeFloat(it) }
+}

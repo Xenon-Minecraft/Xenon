@@ -6,12 +6,14 @@ import com.github.xenonminecraft.network.util.EncryptionManager
 import com.google.gson.GsonBuilder
 import com.moandjiezana.toml.Toml
 import mu.KotlinLogging
+import java.util.*
 
 
 class Xenon(val config: Toml) {
     companion object {
         val PROTOCOL = 401
 
+        val RANDOM = Random()
         val LOGGER = KotlinLogging.logger{}
         val GSON = GsonBuilder().create()
         val DEBUG = true

@@ -10,6 +10,9 @@ import java.util.zip.Inflater
 
 class MinecraftPacketDecompressor(val pc: PlayerConnection) : ByteToMessageDecoder() {
     override fun decode(ctx: ChannelHandlerContext, buf: ByteBuf, out: MutableList<Any>) {
+        if(buf.refCnt() == 0)
+            return
+
         if (pc.compressionThreshold < 0) {
             out.add(buf)
             return
@@ -20,13 +23,12 @@ class MinecraftPacketDecompressor(val pc: PlayerConnection) : ByteToMessageDecod
             out.add(buf)
             return
         }
-
         val inflater = Inflater()
-        inflater.setInput(buf.array())
+        inflater.setInput(Unpooled.copiedBuffer(buf).array())
         val result = ByteArray(decompressedSize)
         if (inflater.inflate(result) != decompressedSize)
             throw IllegalArgumentException("the uncompressed data is not correctly labelled")
-
         out.add(Unpooled.copiedBuffer(result))
+
     }
 }

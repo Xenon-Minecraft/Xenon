@@ -2,9 +2,15 @@ package com.github.xenonminecraft.network
 
 import com.github.xenonminecraft.Xenon
 import com.github.xenonminecraft.network.auth.GameProfile
-import com.github.xenonminecraft.network.netty.*
+import com.github.xenonminecraft.network.netty.MinecraftPacketCompressor
+import com.github.xenonminecraft.network.netty.MinecraftPacketDecompressor
+import com.github.xenonminecraft.network.netty.PacketEncryptionDecoder
+import com.github.xenonminecraft.network.netty.PacketEncryptionEncoder
 import com.github.xenonminecraft.network.packet.Packet
-import io.netty.channel.ChannelHandlerContext
+import com.github.xenonminecraft.network.packet.server.play.PacketServerPlayerPositionAndLook
+import com.github.xenonminecraft.xenon.ChatMode
+import com.github.xenonminecraft.xenon.MainHand
+import com.github.xenonminecraft.xenon.SkinDetails
 import io.netty.channel.socket.SocketChannel
 import java.net.InetSocketAddress
 import javax.crypto.SecretKey
@@ -23,6 +29,36 @@ class PlayerConnection(val addr: InetSocketAddress, val ch: SocketChannel) {
     var gameProfile: GameProfile? = null
 
     var loginCompleted = false
+
+    var locale = ""
+    var mainHand: MainHand? = null
+    var skinDetails: SkinDetails? = null
+    var chatMode: ChatMode? = null
+    var chatColors = true
+    var viewDistance: Int? = null
+
+    var x: Double = 0.0
+    var y: Double = 0.0
+    var z: Double = 0.0
+    var yaw: Float = 0F
+    var pitch: Float = 0F
+
+    private var unconfirmedTeleportIds = mutableListOf<Int>()
+
+    fun teleport(x: Double, y: Double, z: Double, pitch: Float, yaw: Float) {
+        val id = Xenon.RANDOM.nextInt(100) + 1
+        unconfirmedTeleportIds.add(id)
+        this.x = x
+        this.y = y
+        this.z = z
+        this.yaw = yaw
+        this.pitch = pitch
+        sendPacket(PacketServerPlayerPositionAndLook(x, y, z, yaw, pitch, 0, id))
+    }
+
+    fun confirmTeleport(id: Int): Boolean {
+        return unconfirmedTeleportIds.remove(id)
+    }
 
     fun sendPacket(p: Packet) {
         ch.writeAndFlush(p)
@@ -45,7 +81,7 @@ class PlayerConnection(val addr: InetSocketAddress, val ch: SocketChannel) {
     }
 
     fun enableCompression() {
-        if(compress)
+        if (compress)
             return
         ch.pipeline().addAfter("splitter", "decompress", MinecraftPacketDecompressor(this))
         ch.pipeline().addAfter("prepender", "compress", MinecraftPacketCompressor(this))
@@ -59,7 +95,7 @@ class PlayerConnection(val addr: InetSocketAddress, val ch: SocketChannel) {
         STATUS(1);
 
         companion object {
-            fun getById(id: Int): State = State.values().first { it.id == id}
+            fun getById(id: Int): State = State.values().first { it.id == id }
         }
     }
 }
