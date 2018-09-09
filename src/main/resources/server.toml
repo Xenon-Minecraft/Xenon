@@ -6,3 +6,5 @@ compression-threshold=256
 [server]
 online-mode=true
 server-motd="A Minecraft Server"
+default-gamemode="SURVIVAL"
+difficulty="PEACEFUL"
