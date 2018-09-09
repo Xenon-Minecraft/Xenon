@@ -22,6 +22,8 @@ class PlayerConnection(val addr: InetSocketAddress, val ch: SocketChannel) {
     var username: String? = null
     var gameProfile: GameProfile? = null
 
+    var loginCompleted = false
+
     fun sendPacket(p: Packet) {
         ch.writeAndFlush(p)
     }

@@ -1,6 +1,10 @@
 package com.github.xenonminecraft.network.handler
 
+import com.github.xenonminecraft.Bootstrap
 import com.github.xenonminecraft.Xenon
+import com.github.xenonminecraft.xenon.Dimension
+import com.github.xenonminecraft.xenon.GameMode
+import com.github.xenonminecraft.xenon.LevelType
 import com.github.xenonminecraft.network.PlayerConnection
 import com.github.xenonminecraft.network.packet.Packet
 import com.github.xenonminecraft.network.packet.client.login.PacketClientEncryptionResponse
@@ -8,6 +12,10 @@ import com.github.xenonminecraft.network.packet.client.login.PacketClientLoginSt
 import com.github.xenonminecraft.network.packet.server.login.PacketServerEncryptionRequest
 import com.github.xenonminecraft.network.packet.server.login.PacketServerLoginSuccess
 import com.github.xenonminecraft.network.packet.server.login.PacketServerSetCompression
+import com.github.xenonminecraft.network.packet.server.play.*
+import com.github.xenonminecraft.network.util.writeString
+import com.github.xenonminecraft.xenon.Position
+import io.netty.buffer.Unpooled
 import java.util.*
 
 class LoginHandler(val pc: PlayerConnection) {
@@ -50,12 +58,28 @@ class LoginHandler(val pc: PlayerConnection) {
                     }
 
                     pc.sendPacket(PacketServerLoginSuccess(UUID.fromString(gp.uuid), gp.name))
+                    pc.loginCompleted = true
+
                     pc.state = PlayerConnection.State.PLAY
-                    pc.dumpPipeline()
+                    pc.sendPacket(PacketServerJoinGame(0, GameMode.SURVIVAL, Dimension.OVERWORLD,
+                            Xenon.instance!!.difficulty, 0, LevelType.DEFAULT)) //Will need to read player data from disk later
+                    sendBrand()
+
+                    pc.sendPacket(PacketServerDifficulty(Xenon.instance!!.difficulty))
+                    pc.sendPacket(PacketServerSpawnPosition(Position()))
+                    pc.sendPacket(PacketServerPlayerAbilities(false, false, false, false, 1F, 1F))
 
                     Xenon.LOGGER.info("Player ${gp.name} (${gp.uuid}) has joined the game!")
+
                 }
             }
         }
+    }
+
+    private fun sendBrand() {
+        val buf = Unpooled.buffer()
+        buf.writeString("Xenon ${Bootstrap.XENON_VERSION}")
+
+        pc.sendPacket(PacketServerPluginMessage("brand", buf.array()))
     }
 }

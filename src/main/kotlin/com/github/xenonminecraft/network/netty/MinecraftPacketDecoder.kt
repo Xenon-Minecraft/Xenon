@@ -3,6 +3,7 @@ package com.github.xenonminecraft.network.netty
 import com.github.xenonminecraft.network.PlayerConnection
 import com.github.xenonminecraft.network.PlayerConnection.State
 import com.github.xenonminecraft.network.handler.LoginHandler
+import com.github.xenonminecraft.network.handler.PlayHandler
 import com.github.xenonminecraft.network.handler.StatusHandler
 import com.github.xenonminecraft.network.packet.PacketManager
 import com.github.xenonminecraft.network.packet.client.PacketClientHandshake
@@ -62,6 +63,16 @@ class MinecraftPacketDecoder(val pc: PlayerConnection) : ByteToMessageDecoder() 
                     e.printStackTrace()
                 }
 
+            }
+            State.PLAY -> {
+                try {
+                    val cls = PacketManager.playPackets!![id] ?: return
+                    val p = cls.newInstance()
+                    p.decode(buf)
+                    PlayHandler(pc).handle(p)
+                } catch(e: Exception) {
+                    e.printStackTrace()
+                }
             }
         }
 
