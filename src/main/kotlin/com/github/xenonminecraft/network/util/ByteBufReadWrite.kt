@@ -1,5 +1,6 @@
 package com.github.xenonminecraft.network.util
 
+import com.github.xenonminecraft.xenon.Position
 import io.netty.buffer.ByteBuf
 import io.netty.buffer.Unpooled
 import kotlin.experimental.and
@@ -79,3 +80,9 @@ fun ByteBuf.writeString(str: String) {
     writeVarInt(str.length)
     writeBytes(str.toByteArray())
 }
+
+fun ByteBuf.writePosition(pos: Position) {
+    writeLong(pos.toLong())
+}
+
+fun ByteBuf.readPosition(): Position = Position.fromLong(readLong())

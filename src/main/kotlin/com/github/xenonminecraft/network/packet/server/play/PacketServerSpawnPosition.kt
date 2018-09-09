@@ -16,7 +16,7 @@ class PacketServerSpawnPosition(var pos: Position) : Packet() {
 
     override fun encode(): ByteBuf {
         val buf = Unpooled.buffer()
-        buf.writeBytes(pos.encodePosition())
+        buf.writeLong(pos.toLong())
 
         return buf
     }
