@@ -16,7 +16,7 @@ class XenonServerInitialiser : ChannelInitializer<SocketChannel>() {
         val pipeline = ch.pipeline()
 
         //Handle legacy handshake packet ;), courtesy of proximyst
-        pipeline.addFirst("legacy ping packet handler", object : ChannelInboundHandlerAdapter() {
+        /*pipeline.addLast("legacy ping packet handler", object : ChannelInboundHandlerAdapter() {
             override fun channelRead(ctx: ChannelHandlerContext, msg: Any?) {
                 if (msg !is ByteBuf) return
                 val buf = msg.copy(0, 2)
@@ -26,7 +26,7 @@ class XenonServerInitialiser : ChannelInitializer<SocketChannel>() {
                     ctx.close()
                 }
             }
-        })
+        })*/
 
         //Decryption will be here
         pipeline.addLast("splitter", VarInt21FrameDecoder())
