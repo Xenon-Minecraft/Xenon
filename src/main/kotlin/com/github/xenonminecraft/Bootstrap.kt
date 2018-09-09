@@ -14,8 +14,7 @@ import io.netty.handler.logging.LoggingHandler
 import java.io.File
 import java.nio.file.Files
 
-val MINECRAFT_VERSION = "1.13"
-val XENON_VERSION = "0.0dev"
+
 
 fun main(args: Array<String>) {
     println("Handling early init")
@@ -28,11 +27,10 @@ fun main(args: Array<String>) {
 
     val port = config.getLong("network.port").toInt()
     val ip = config.getString("network.ip")
-    println("Starting Minecraft Server $MINECRAFT_VERSION with Xenon $XENON_VERSION on $ip:$port")
+    println("Starting Minecraft Server ${Bootstrap.MINECRAFT_VERSION} with Xenon ${Bootstrap.XENON_VERSION} on $ip:$port")
     Xenon(config).start()
 
     Thread {
-
         val bossGroup = NioEventLoopGroup()
         val workerGroup = NioEventLoopGroup()
 
@@ -82,4 +80,9 @@ fun loadConfig(): Toml {
     return Toml().read(config)
 }
 
-class Bootstrap
+class Bootstrap {
+    companion object {
+        val MINECRAFT_VERSION = "1.13"
+        val XENON_VERSION = "0.0dev"
+    }
+}

@@ -1,5 +1,6 @@
 package com.github.xenonminecraft
 
+import com.github.xenonminecraft.xenon.Difficulty
 import com.github.xenonminecraft.network.auth.SessionManager
 import com.github.xenonminecraft.network.util.EncryptionManager
 import com.google.gson.GsonBuilder
@@ -13,6 +14,7 @@ class Xenon(val config: Toml) {
 
         val LOGGER = KotlinLogging.logger{}
         val GSON = GsonBuilder().create()
+        val DEBUG = true
 
         var instance: Xenon? = null
             set(i) {
@@ -32,6 +34,8 @@ class Xenon(val config: Toml) {
 
     val encryptionManager = EncryptionManager()
     var sessionManager = SessionManager()
+
+    var difficulty = Difficulty.PEACEFUL
 
     fun start() {
         instance = this
