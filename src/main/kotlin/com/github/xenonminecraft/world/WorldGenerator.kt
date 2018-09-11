@@ -22,6 +22,6 @@
  * SOFTWARE.
  */
 
-package com.github.xenonminecraft.entity
+package com.github.xenonminecraft.world
 
-open class Entity
+class WorldGenerator

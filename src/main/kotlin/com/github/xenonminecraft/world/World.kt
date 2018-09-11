@@ -26,6 +26,7 @@ package com.github.xenonminecraft.world
 
 import com.github.xenonminecraft.entity.Entity
 import com.github.xenonminecraft.entity.player.Player
+import com.github.xenonminecraft.world.chunk.Chunk
 import com.github.xenonminecraft.world.tileentity.TileEntity
 
 class World {
