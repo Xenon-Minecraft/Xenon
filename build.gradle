@@ -10,6 +10,7 @@ version '1.0-SNAPSHOT'
 repositories {
     mavenCentral()
     jcenter()
+    maven { url 'https://oss.sonatype.org/content/groups/public/' }
 }
 
 dependencies {
@@ -26,6 +27,8 @@ dependencies {
     compile ("io.github.microutils:kotlin-logging:1.4.6") {
         exclude group: 'org.slf4j', module: 'slf4j-api'
     }
+
+    compile "net.kyori:nbt:1.12-1.0.0-SNAPSHOT"
 }
 
 compileKotlin {

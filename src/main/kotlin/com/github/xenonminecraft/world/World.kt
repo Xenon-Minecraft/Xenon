@@ -24,5 +24,13 @@
 
 package com.github.xenonminecraft.world
 
+import com.github.xenonminecraft.entity.Entity
+import com.github.xenonminecraft.entity.player.Player
+import com.github.xenonminecraft.world.tileentity.TileEntity
+
 class World {
+    val loadedEntities = mutableListOf<Entity>()
+    val loadedTileEntities = mutableListOf<TileEntity>()
+    val loadedPlayers = mutableListOf<Player>()
+    val loadedChunks = mutableListOf<Chunk>()
 }
